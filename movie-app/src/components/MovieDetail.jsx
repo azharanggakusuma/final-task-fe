@@ -1,49 +1,170 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import Container from "./Container";
+import StarRating from "./StarRating";
 
-function MovieDetail({ match }) {
+function MovieDetail() {
+  const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [characters, setCharacters] = useState([]);
+  const [reviews, setReviews] = useState([]);
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
-    const movieId = match.params.id;
-    const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
-    const apiUrl = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}`;
+    async function fetchMovieDetail() {
+      try {
+        const apiKey = "efd42c0dec4962480c31d64eed84eb7f"; 
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`
+        );
 
-    axios
-      .get(apiUrl)
-      .then((response) => {
         setMovie(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching movie details: ", error);
-      });
-  }, [match.params.id]);
+      } catch (error) {
+        console.error("Error fetching movie detail: ", error);
+      }
+    }
+
+    async function fetchCharacters() {
+      try {
+        const apiKey = "efd42c0dec4962480c31d64eed84eb7f"; 
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}&language=en-US`
+        );
+
+        setCharacters(response.data.cast);
+      } catch (error) {
+        console.error("Error fetching characters: ", error);
+      }
+    }
+
+    async function fetchReviews() {
+      try {
+        const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${apiKey}&language=en-US`
+        );
+
+        setReviews(response.data.results);
+      } catch (error) {
+        console.error("Error fetching reviews: ", error);
+      }
+    }
+
+    fetchMovieDetail();
+    fetchCharacters();
+    fetchReviews();
+  }, [id]);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
+
+  if (!movie) {
+    return <div className="text-center mt-8">Loading...</div>;
+  }
 
   return (
-    <div>
-      {movie ? (
-        <div className="container mx-auto p-4">
-          <h1 className="text-2xl font-semibold mb-4">{movie.title}</h1>
-          <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <img
-              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-              alt={movie.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h2 className="text-lg font-semibold">{movie.title}</h2>
-              <p className="text-gray-500">
-                Genres: {movie.genres.map((genre) => genre.name).join(", ")}
-              </p>
-              <p className="text-gray-500">
-                Release Date: {movie.release_date}
-              </p>
-              <p className="text-gray-500">Overview: {movie.overview}</p>
+    <div className="-mt-80">
+      {/* Jumbotron */}
+      <div
+        className="bg-black text-white py-16 px-4"
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="container mx-auto flex items-center">
+          <div className="ml-8">
+            <h1 className="text-4xl font-black">{movie.title}</h1>
+            <div className="flex items-center mt-4">
+              <div className="mr-4">
+                <StarRating rating={movie.vote_average} />
+              </div>
+              <div>
+                <span className="text-xl">{movie.vote_count} Review</span>
+              </div>
+            </div>
+            <p className="mt-4 text-xl">{movie.overview}</p>
+            <div className="mt-8">
+              <button className="bg-primary hover:bg-secondary transition duration-300 ease-in-out rounded-md text-white px-4 py-2 mr-4">
+                Watch Trailer
+              </button>
+              <button className="bg-gray-300 hover:bg-gray-400 transition duration-300 ease-in-out rounded-md text-gray-900 px-4 py-2">
+                Add to Watchlist
+              </button>
             </div>
           </div>
         </div>
-      ) : (
-        <p>Loading...</p>
+      </div>
+
+      <div className="mb-4 mt-20">
+        <Container>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => handleTabClick("overview")}
+              className={`${
+                activeTab === "overview"
+                  ? "bg-secondary text-white hover:bg-primary transition duration-300 ease-in-out"
+                  : "bg-gray-300 text-gray-600 hover:bg-gray-400 transition duration-300 ease-in-out"
+              } py-2 px-4 rounded cursor-pointer`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => handleTabClick("character")}
+              className={`${
+                activeTab === "character"
+                  ? "bg-secondary text-white hover:bg-primary transition duration-300 ease-in-out"
+                  : "bg-gray-300 text-gray-600 hover:bg-gray-400 transition duration-300 ease-in-out"
+              } py-2 px-4 rounded cursor-pointer`}
+            >
+              Character
+            </button>
+            <button
+              onClick={() => handleTabClick("review")}
+              className={`${
+                activeTab === "review"
+                  ? "bg-secondary text-white hover:bg-primary transition duration-300 ease-in-out"
+                  : "bg-gray-300 text-gray-600 hover:bg-gray-400 transition duration-300 ease-in-out"
+              } py-2 px-4 rounded cursor-pointer`}
+            >
+              Review
+            </button>
+          </div>
+        </Container>
+      </div>
+      {activeTab === "overview" && (
+        <Container>
+          <h2 className="text-xl font-semibold">Overview</h2>
+          <p className="text-gray-700">{movie.overview}</p>
+        </Container>
+      )}
+      {activeTab === "character" && (
+        <Container>
+          <h2 className="text-xl font-semibold">Character</h2>
+          <ul>
+            {characters.map((character) => (
+              <li key={character.id} className="mb-2">
+                <strong>{character.name}</strong> - {character.character}
+              </li>
+            ))}
+          </ul>
+        </Container>
+      )}
+      {activeTab === "review" && (
+        <Container>
+          <h2 className="text-xl font-semibold">Review</h2>
+          <ul>
+            {reviews.map((review) => (
+              <li key={review.id} className="mb-2">
+                <strong>{review.author}:</strong> {review.content}
+              </li>
+            ))}
+          </ul>
+        </Container>
       )}
     </div>
   );

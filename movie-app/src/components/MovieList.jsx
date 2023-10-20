@@ -72,8 +72,8 @@ function MovieList() {
             onClick={() => setSelectedGenre("All")}
             className={`genre-button ${
               selectedGenre === "All"
-                ? "bg-secondary text-white"
-                : "text-gray-400"
+                ? "bg-secondary text-white hover:bg-primary transition duration-300 ease-in-out"
+                : "text-gray-400 hover:text-gray-500 transition duration-300 ease-in-out"
             } py-2 px-4 rounded`}
           >
             All
@@ -84,8 +84,8 @@ function MovieList() {
               onClick={() => setSelectedGenre(genre.id)}
               className={`genre-button ${
                 selectedGenre === genre.id
-                  ? "bg-secondary text-white"
-                  : "text-gray-400"
+                  ? "bg-secondary text-white hover:bg-primary transition duration-300 ease-in-out"
+                  : "text-gray-400 hover:text-gray-500"
               } py-2 px-4 rounded`}
             >
               {genre.name}
@@ -97,6 +97,7 @@ function MovieList() {
         {currentMovies.map((movie) => (
           <MovieCard
             key={movie.id}
+            id={movie.id}
             title={movie.title}
             image={movie.poster_path}
             genres={movie.genre_ids.map(
