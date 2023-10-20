@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -5,7 +6,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import Container from "./Container";
 import Logo from "../assets/img/logo.png";
 
-function Navbar() {
+function Navbar({ onSearchQueryChange }) {
   return (
     <nav className="bg-white p-4 fixed top-0 w-full shadow-md z-50">
       <Container>
@@ -20,6 +21,7 @@ function Navbar() {
               type="text"
               className="py-2 pl-12 pr-4 rounded-md focus:outline-none focus:ring focus:border-gray-300 w-full bg-white border border-gray-200"
               placeholder="Search movie"
+              onChange={(e) => onSearchQueryChange(e.target.value)}
             />
           </div>
         </div>
@@ -36,6 +38,7 @@ function Navbar() {
               type="text"
               className="py-2 pl-12 pr-4 rounded-md focus:outline-none focus:ring focus:border-gray-300 w-full bg-white border border-gray-200"
               placeholder="Search movie"
+              onChange={(e) => onSearchQueryChange(e.target.value)}
             />
           </div>
         </div>

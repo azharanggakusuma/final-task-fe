@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
@@ -6,12 +7,13 @@ import axios from "axios";
 import Container from "./Container";
 import Pagination from "./Pagination";
 
-function MovieList() {
+function MovieList({ searchQuery }) {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage] = useState(12);
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   useEffect(() => {
     fetchGenres()
@@ -24,6 +26,10 @@ function MovieList() {
       .then((data) => setMovies(data.results))
       .catch((error) => console.error("Error fetching data: ", error));
   }, [selectedGenre]);
+
+  useEffect(() => {
+    filterMovies();
+  }, [searchQuery, movies, selectedGenre]);
 
   async function fetchGenres() {
     const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
@@ -55,17 +61,29 @@ function MovieList() {
     }
   }
 
+  const filterMovies = () => {
+    const filtered = movies.filter((movie) =>
+      movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredMovies(filtered);
+  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
+  const currentMovies = filteredMovies.slice(
+    indexOfFirstMovie,
+    indexOfLastMovie
+  );
 
   return (
     <Container>
-      <h1 className="text-2xl font-semibold mb-4 lg:-mt-80 -mt-12">Browse by category</h1>
+      <h1 className="text-2xl font-semibold mb-4 lg:-mt-80 -mt-12">
+        Browse by category
+      </h1>
       <div className="mb-4">
         <div className="flex flex-wrap gap-2">
           <button
@@ -93,6 +111,13 @@ function MovieList() {
           ))}
         </div>
       </div>
+      <input
+        type="text"
+        placeholder="Search..."
+        className="py-2 px-3 rounded mb-4 hidden"
+        value={searchQuery}
+        onChange={(e) => filterMovies(e.target.value)}
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {currentMovies.map((movie) => (
           <MovieCard
@@ -108,7 +133,7 @@ function MovieList() {
       </div>
       <Pagination
         currentPage={currentPage}
-        totalPages={Math.ceil(movies.length / moviesPerPage)}
+        totalPages={Math.ceil(filteredMovies.length / moviesPerPage)}
         onPageChange={handlePageChange}
       />
     </Container>
