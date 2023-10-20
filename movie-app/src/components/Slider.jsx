@@ -9,7 +9,7 @@ function Slider() {
   const location = useLocation();
   const isDetailPage = location.pathname.includes("/movie/");
   const [sliderImages, setSliderImages] = useState([]);
-  const [maxImagesToShow, setMaxImagesToShow] = useState(3);
+  const maxImagesToShow = 3;
 
   useEffect(() => {
     async function fetchSliderImages() {
@@ -18,8 +18,12 @@ function Slider() {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`
         );
-        // setSliderImages(response.data.results);
-        setSliderImages(response.data.results.slice(0, maxImagesToShow));
+
+        const shuffledImages = response.data.results.sort(
+          () => Math.random() - 0.5
+        );
+
+        setSliderImages(shuffledImages.slice(0, maxImagesToShow));
       } catch (error) {
         console.error("Error fetching slider images: ", error);
       }
@@ -35,7 +39,7 @@ function Slider() {
       <br />
       <br />
       <br />
-      <div>
+      <div className="">
         <Carousel
           showArrows={false}
           showStatus={false}
