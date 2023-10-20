@@ -118,19 +118,25 @@ function MovieList({ searchQuery }) {
         value={searchQuery}
         onChange={(e) => filterMovies(e.target.value)}
       />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {currentMovies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            image={movie.poster_path}
-            genres={movie.genre_ids.map(
-              (genreId) => genres.find((genre) => genre.id === genreId)?.name
-            )}
-          />
-        ))}
-      </div>
+      {currentMovies.length === 0 ? (
+        <div className="text-lg text-gray-600">
+          No movies found with the current search criteria.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {currentMovies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              image={movie.poster_path}
+              genres={movie.genre_ids.map(
+                (genreId) => genres.find((genre) => genre.id === genreId)?.name
+              )}
+            />
+          ))}
+        </div>
+      )}
       <Pagination
         currentPage={currentPage}
         totalPages={Math.ceil(filteredMovies.length / moviesPerPage)}
