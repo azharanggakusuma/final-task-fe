@@ -35,7 +35,7 @@ function Navbar() {
             <input
               type="text"
               className="py-2 pl-12 pr-4 rounded-md focus:outline-none focus:ring focus:border-gray-300 w-full bg-white border border-gray-200"
-              placeholder="Cari..."
+              placeholder="Search movie"
             />
           </div>
         </div>

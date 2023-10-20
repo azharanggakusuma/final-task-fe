@@ -31,6 +31,8 @@ function Slider() {
 
     if (!isDetailPage) {
       fetchSliderImages();
+    } else {
+      setSliderImages([]);
     }
   }, [isDetailPage]);
 
