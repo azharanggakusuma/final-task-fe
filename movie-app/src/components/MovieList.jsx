@@ -65,7 +65,7 @@ function MovieList() {
 
   return (
     <Container>
-      <h1 className="text-2xl font-semibold mb-4">Browse by category</h1>
+      <h1 className="text-2xl font-semibold mb-4 lg:-mt-80 -mt-12">Browse by category</h1>
       <div className="mb-4">
         <div className="flex flex-wrap gap-2">
           <button
