@@ -66,8 +66,8 @@ function MovieDetail() {
   }
 
   return (
-    <div className="-mt-80">
-      {/* Jumbotron */}
+    <div className="lg:-mt-80">
+      {/* Banner */}
       <div
         className="bg-black text-white py-16 px-4"
         style={{
