@@ -47,7 +47,7 @@ Aplikasi ini adalah sebuah platform web untuk melihat daftar film dan mengakses 
 2. Klon repository:
 
    ```bash
-   cd movie-app
+   cd final-task-fe
 3. Klon repository:
 
    ```bash
