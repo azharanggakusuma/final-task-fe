@@ -15,7 +15,7 @@ function App() {
       <div>
         <Navbar onSearchQueryChange={setSearchQuery} />
         <Slider />
-        <div className="mt-20 lg:mt-96 mb-10">
+        <div className="lg:mt-96 mb-10">
           <Routes>
             <Route path="/" element={<MovieList searchQuery={searchQuery} />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
