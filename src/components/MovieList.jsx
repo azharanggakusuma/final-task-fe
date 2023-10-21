@@ -113,7 +113,7 @@ function MovieList({ searchQuery }) {
           >
             All
           </button>
-          {genres.map((genre) => (
+          {genres.map((genre) => ( 
             <button
               key={genre.id}
               onClick={() => setSelectedGenre(genre.id)}
