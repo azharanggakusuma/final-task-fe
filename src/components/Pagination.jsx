@@ -7,7 +7,7 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Pagination({ currentPage, totalPages, onPageChange }) {
+function Pagination({ currentPage, totalPages, onPageChange }) { 
   const pageNumbers = [];
   const maxPageButtons = 5;
   const halfMaxButtons = Math.floor(maxPageButtons / 2);
