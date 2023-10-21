@@ -74,7 +74,7 @@ function MovieDetail() {
   }
 
   return (
-    <div className="lg:-mt-96">
+    <div className="lg:-mt-96 -mt-10">
       {/* Banner */}
       <div
         className="bg-black text-white py-16 px-4"
