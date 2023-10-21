@@ -31,7 +31,7 @@ function Navbar({ onSearchQueryChange }) {
           <img src={Logo} alt="Logo" className="h-8 w-13 mb-3" />{" "}
           {/* Gunakan logo dari import */}
           <div className="w-1/2 mx-auto relative mt-2">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-4">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4"> 
               <FontAwesomeIcon icon={faSearch} />
             </span>
             <input
