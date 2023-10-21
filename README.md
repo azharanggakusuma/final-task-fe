@@ -15,8 +15,8 @@ Aplikasi ini adalah sebuah platform web untuk melihat daftar film dan mengakses 
 
 ## Fitur
 
-- Menjelajahi film berdasarkan kategori.
-- Menyaring film berdasarkan genre.
+- Mencari film berdasarkan kategori.
+- Memfilter film berdasarkan genre.
 - Mencari film berdasarkan judul.
 - Melihat informasi detail tentang film, termasuk sinopsis, tanggal rilis, sutradara, lagu terkenal, anggaran, dan lainnya.
 - Mengakses informasi tentang karakter dalam film.
@@ -26,7 +26,6 @@ Aplikasi ini adalah sebuah platform web untuk melihat daftar film dan mengakses 
 ## Teknologi yang Digunakan
 
 - React JS
-- React Router
 - Axios
 - The Movie Database (TMDb) API
 - Tailwind
@@ -40,22 +39,22 @@ Aplikasi ini adalah sebuah platform web untuk melihat daftar film dan mengakses 
 
 ### Instalasi
 
-1. Klon repository:
+1. Clone repository:
 
    ```bash
    git clone https://github.com/azharanggakusuma/final-task-fe.git
-2. Klon repository:
+2. Pindah directory:
 
    ```bash
    cd final-task-fe
-3. Klon repository:
+3. Install package:
 
    ```bash
    npm install
 
 ### Penggunaan
 
-1. Jalankan server pengembangan:
+1. Jalankan serve:
 
    ```bash
    npm start atau npm run dev
@@ -65,4 +64,4 @@ Aplikasi ini adalah sebuah platform web untuk melihat daftar film dan mengakses 
 Proyek ini dilisensikan di bawah Lisensi MIT. Lihat berkas LICENSE untuk detailnya.
 
 ## Kontak
-Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menghubungi saya di Instagram: [@azharanggakusuma](https://instagram.com/azharangga_kusuma)
+Jika Anda memiliki pertanyaan atau saran, jangan ragu untuk menghubungi saya di Instagram: [@azharangga_kusuma](https://instagram.com/azharangga_kusuma)
