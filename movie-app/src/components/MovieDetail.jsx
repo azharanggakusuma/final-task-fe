@@ -5,6 +5,14 @@ import axios from "axios";
 import Container from "./Container";
 import StarRating from "./StarRating";
 
+function formatBudget(budget) {
+  if (budget >= 1000000) {
+    return `${(budget / 1000000).toFixed(2)} million USD`;
+  } else {
+    return `${budget} USD`;
+  }
+}
+
 function MovieDetail() {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
@@ -138,13 +146,34 @@ function MovieDetail() {
       </div>
       {activeTab === "overview" && (
         <Container>
-          <h2 className="text-xl font-semibold">Overview</h2>
-          <p className="text-gray-700">{movie.overview}</p>
+          <h2 className="text-xl font-semibold mt-10">Synopsis</h2>
+          <p className="text-gray-700 mt-2">
+            {movie.overview || (<span style={{ color: "red" }}>Data not available</span>)}
+          </p>
+
+          <h2 className="text-xl font-semibold mt-4 mb-2">Movie Info</h2>
+          <p>
+            <strong>Release date:</strong>{" "}
+            {movie.release_date || (<span style={{ color: "red" }}>Data not available</span>)}
+          </p>
+          <p>
+            <strong>Director:</strong> {movie.director || (<span style={{ color: "red" }}>Data not available</span>)}
+          </p>
+          <p>
+            <strong>Featured song:</strong>{" "}
+            {movie.featured_song || (<span style={{ color: "red" }}>Data not available</span>)}
+          </p>
+          <p>
+            <p>
+              <strong>Budget:</strong>{" "}
+              {movie.budget ? formatBudget(movie.budget) : (<span style={{ color: "red" }}>Data not available</span>)}
+            </p>
+          </p>
         </Container>
       )}
       {activeTab === "character" && (
         <Container>
-          <h2 className="text-xl font-semibold">Character</h2>
+          <h2 className="text-xl font-semibold mb-2 mt-10">Character</h2>
           <ul>
             {characters.map((character) => (
               <li key={character.id} className="mb-2">
@@ -156,7 +185,7 @@ function MovieDetail() {
       )}
       {activeTab === "review" && (
         <Container>
-          <h2 className="text-xl font-semibold">Review</h2>
+          <h2 className="text-xl font-semibold mb-2 mt-10">Review</h2>
           <ul>
             {reviews.map((review) => (
               <li key={review.id} className="mb-2">
