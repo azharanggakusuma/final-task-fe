@@ -12,7 +12,7 @@ function StarRating({ rating }) {
 
   for (let i = 0; i < fullStars; i++) {
     stars.push(
-      <FontAwesomeIcon icon={faStar} key={i} className="text-yellow-500" />
+      <FontAwesomeIcon icon={faStar} key={i} className="text-yellow-500" /> 
     );
   }
 

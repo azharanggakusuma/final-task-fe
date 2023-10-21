@@ -8,7 +8,7 @@ function MovieCard({ title, image, genres, id }) {
 
   return (
     <div className="container">
-      <div className="bg-white shadow-md rounded-lg overflow-hidden h-full">
+      <div className="bg-white shadow-md rounded-lg overflow-hidden h-full"> 
         <img
           src={`https://image.tmdb.org/t/p/w300${image}`}
           alt={title}
