@@ -19,11 +19,13 @@ function MovieDetail() {
   const [characters, setCharacters] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
+  const [trailerKey, setTrailerKey] = useState("");
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
 
   useEffect(() => {
     async function fetchMovieDetail() {
       try {
-        const apiKey = "efd42c0dec4962480c31d64eed84eb7f"; 
+        const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`
         );
@@ -36,7 +38,7 @@ function MovieDetail() {
 
     async function fetchCharacters() {
       try {
-        const apiKey = "efd42c0dec4962480c31d64eed84eb7f"; 
+        const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}&language=en-US`
         );
@@ -60,13 +62,40 @@ function MovieDetail() {
       }
     }
 
+    async function fetchTrailer() {
+      try {
+        const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=en-US`
+        );
+        
+        const trailer = response.data.results.find(
+          (video) => video.type === "Trailer"
+        );
+        if (trailer) {
+          setTrailerKey(trailer.key);
+        }
+      } catch (error) {
+        console.error("Error fetching trailer: ", error);
+      }
+    }
+
     fetchMovieDetail();
     fetchCharacters();
     fetchReviews();
+    fetchTrailer();
   }, [id]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+  };
+
+  const openTrailer = () => {
+    setIsTrailerOpen(true);
+  };
+
+  const closeTrailer = () => {
+    setIsTrailerOpen(false);
   };
 
   if (!movie) {
@@ -86,7 +115,7 @@ function MovieDetail() {
       >
         <div className="container mx-auto flex items-center">
           <div className="ml-8">
-            <h1 className="text-4xl font-black">{movie.title}</h1> 
+            <h1 className="text-4xl font-black">{movie.title}</h1>
             <div className="flex items-center mt-4">
               <div className="mr-4">
                 <StarRating rating={movie.vote_average} />
@@ -97,7 +126,10 @@ function MovieDetail() {
             </div>
             <p className="mt-4 text-xl">{movie.overview}</p>
             <div className="mt-8">
-              <button className="bg-primary hover:bg-secondary transition duration-300 ease-in-out rounded-md text-white px-4 py-2 mr-4">
+              <button
+                className="bg-primary hover:bg-secondary transition duration-300 ease-in-out rounded-md text-white px-4 py-2 mr-4"
+                onClick={openTrailer}
+              >
                 Watch Trailer
               </button>
               <button className="bg-gray-300 hover:bg-gray-400 transition duration-300 ease-in-out rounded-md text-gray-900 px-4 py-2">
@@ -224,6 +256,27 @@ function MovieDetail() {
             {reviews.length === 0 && <p>No reviews available.</p>}
           </ul>
         </Container>
+      )}
+      {/* Trailer Pop-up */}
+      {isTrailerOpen && trailerKey && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-md w-full max-w-md flex flex-col items-center justify-center mt-10">
+            <iframe
+              title="Trailer"
+              width="100%"
+              height="315"
+              src={`https://www.youtube.com/embed/${trailerKey}`}
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+            <button
+              className="bg-red-500 text-white px-3 py-2 mt-3 rounded"
+              onClick={closeTrailer}
+            >
+              Close Trailer
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
