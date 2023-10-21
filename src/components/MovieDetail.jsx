@@ -86,7 +86,7 @@ function MovieDetail() {
       >
         <div className="container mx-auto flex items-center">
           <div className="ml-8">
-            <h1 className="text-4xl font-black">{movie.title}</h1>
+            <h1 className="text-4xl font-black">{movie.title}</h1> 
             <div className="flex items-center mt-4">
               <div className="mr-4">
                 <StarRating rating={movie.vote_average} />
