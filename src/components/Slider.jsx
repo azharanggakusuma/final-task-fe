@@ -63,7 +63,7 @@ function Slider() {
               />
             </div>
           ))}
-        </Carousel>
+        </Carousel> 
       </div>
     </div>
   );
