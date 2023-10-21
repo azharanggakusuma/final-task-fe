@@ -9,12 +9,18 @@ import {
 
 function Pagination({ currentPage, totalPages, onPageChange }) {
   const pageNumbers = [];
+  const maxPageButtons = 5;
+  const halfMaxButtons = Math.floor(maxPageButtons / 2);
 
-  for (
-    let i = Math.max(1, currentPage - 2);
-    i <= Math.min(currentPage + 2, totalPages);
-    i++
-  ) {
+  let startPage = Math.max(1, currentPage - halfMaxButtons);
+  let endPage = startPage + maxPageButtons - 1;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - maxPageButtons + 1);
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
     pageNumbers.push(i);
   }
 

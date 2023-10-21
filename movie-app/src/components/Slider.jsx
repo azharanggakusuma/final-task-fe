@@ -56,8 +56,9 @@ function Slider() {
                 src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
                 alt={`Movie ${index + 1}`}
                 style={{
-                  maxHeight: "50vh",
+                  maxHeight: "52vh", 
                   maxWidth: "100%",
+                  objectFit: "cover",
                 }}
               />
             </div>

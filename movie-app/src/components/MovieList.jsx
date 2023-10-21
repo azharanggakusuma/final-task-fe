@@ -14,6 +14,8 @@ function MovieList({ searchQuery }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage] = useState(12);
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalPagesToFetch] = useState(3);
 
   useEffect(() => {
     fetchGenres()
@@ -22,8 +24,15 @@ function MovieList({ searchQuery }) {
   }, []);
 
   useEffect(() => {
-    fetchMovieData()
-      .then((data) => setMovies(data.results))
+    fetchAllMovieData()
+      .then((data) => {
+        const combinedMovies = [];
+        for (let i = 1; i <= totalPagesToFetch; i++) {
+          combinedMovies.push(...data[i].results);
+        }
+        setMovies(combinedMovies);
+        setTotalPages(data[totalPagesToFetch].total_pages);
+      })
       .catch((error) => console.error("Error fetching data: ", error));
   }, [selectedGenre]);
 
@@ -44,21 +53,29 @@ function MovieList({ searchQuery }) {
     }
   }
 
-  async function fetchMovieData() {
+  async function fetchAllMovieData() {
     const apiKey = "efd42c0dec4962480c31d64eed84eb7f";
-    let apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&sort_by=popularity.desc`;
+    const movieDataPromises = [];
 
-    if (selectedGenre !== "All") {
-      apiUrl += `&with_genres=${selectedGenre}`;
+    for (let i = 1; i <= totalPagesToFetch; i++) {
+      let apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&sort_by=popularity.desc&page=${i}`;
+
+      if (selectedGenre !== "All") {
+        apiUrl += `&with_genres=${selectedGenre}`;
+      }
+
+      movieDataPromises.push(
+        axios.get(apiUrl).then((response) => response.data)
+      );
     }
 
-    try {
-      const response = await axios.get(apiUrl);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-      throw error;
-    }
+    return Promise.all(movieDataPromises).then((data) => {
+      const result = {};
+      for (let i = 0; i < data.length; i++) {
+        result[i + 1] = data[i];
+      }
+      return result;
+    });
   }
 
   const filterMovies = () => {
