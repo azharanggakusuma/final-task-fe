@@ -146,52 +146,82 @@ function MovieDetail() {
       </div>
       {activeTab === "overview" && (
         <Container>
-          <h2 className="text-xl font-semibold mt-10">Synopsis</h2>
+          <h2 className="text-2xl font-bold mt-10">Synopsis</h2>
           <p className="text-gray-700 mt-2">
-            {movie.overview || (<span style={{ color: "red" }}>Data not available</span>)}
+            {movie.overview || (
+              <span style={{ color: "red" }}>Data not available</span>
+            )}
           </p>
 
-          <h2 className="text-xl font-semibold mt-4 mb-2">Movie Info</h2>
+          <h2 className="text-2xl font-bold mt-4 mb-2">Movie Info</h2>
           <p>
             <strong>Release date:</strong>{" "}
-            {movie.release_date || (<span style={{ color: "red" }}>Data not available</span>)}
+            {movie.release_date || (
+              <span style={{ color: "red" }}>Data not available</span>
+            )}
           </p>
           <p>
-            <strong>Director:</strong> {movie.director || (<span style={{ color: "red" }}>Data not available</span>)}
+            <strong>Director:</strong>{" "}
+            {movie.director || (
+              <span style={{ color: "red" }}>Data not available</span>
+            )}
           </p>
           <p>
             <strong>Featured song:</strong>{" "}
-            {movie.featured_song || (<span style={{ color: "red" }}>Data not available</span>)}
+            {movie.featured_song || (
+              <span style={{ color: "red" }}>Data not available</span>
+            )}
           </p>
           <p>
             <p>
               <strong>Budget:</strong>{" "}
-              {movie.budget ? formatBudget(movie.budget) : (<span style={{ color: "red" }}>Data not available</span>)}
+              {movie.budget ? (
+                formatBudget(movie.budget)
+              ) : (
+                <span style={{ color: "red" }}>Data not available</span>
+              )}
             </p>
           </p>
         </Container>
       )}
       {activeTab === "character" && (
         <Container>
-          <h2 className="text-xl font-semibold mb-2 mt-10">Character</h2>
+          <h2 className="text-2xl font-bold mb-2 mt-10">Character</h2>
           <ul>
-            {characters.map((character) => (
-              <li key={character.id} className="mb-2">
-                <strong>{character.name}</strong> - {character.character}
-              </li>
-            ))}
+            {characters.length > 0 && (
+              <div>
+                <ul>
+                  {characters.map((character) => (
+                    <li key={character.id} className="mb-2">
+                      <strong>{character.name}</strong> - {character.character}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {characters.length === 0 && <p>No characters available.</p>}
           </ul>
         </Container>
       )}
       {activeTab === "review" && (
         <Container>
-          <h2 className="text-xl font-semibold mb-2 mt-10">Review</h2>
+          <h2 className="text-2xl font-bold mb-2 mt-10">Reviews</h2>
           <ul>
-            {reviews.map((review) => (
-              <li key={review.id} className="mb-2">
-                <strong>{review.author}:</strong> {review.content}
-              </li>
-            ))}
+            {reviews.length > 0 && (
+              <div>
+                <h2 className="text-xl font-semibold">Review</h2>
+                <ul>
+                  {reviews.map((review) => (
+                    <li key={review.id} className="mb-2">
+                      <strong>{review.author}:</strong> {review.content}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {reviews.length === 0 && <p>No reviews available.</p>}
           </ul>
         </Container>
       )}
