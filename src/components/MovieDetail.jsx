@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Container from "./Container";
 import StarRating from "./StarRating";
+import Swal from "sweetalert2";
 
 function formatBudget(budget) {
   if (budget >= 1000000) {
@@ -21,6 +22,7 @@ function MovieDetail() {
   const [activeTab, setActiveTab] = useState("overview");
   const [trailerKey, setTrailerKey] = useState("");
   const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+  const [isAddedToWatchlist, setIsAddedToWatchlist] = useState(false);
 
   useEffect(() => {
     async function fetchMovieDetail() {
@@ -84,6 +86,10 @@ function MovieDetail() {
     fetchCharacters();
     fetchReviews();
     fetchTrailer();
+    // Periksa apakah film ada di Watchlist saat komponen dimuat
+    const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+    const isAdded = watchlist.some((item) => item.id === id);
+    setIsAddedToWatchlist(isAdded);
   }, [id]);
 
   const handleTabClick = (tab) => {
@@ -97,6 +103,48 @@ function MovieDetail() {
   const closeTrailer = () => {
     setIsTrailerOpen(false);
   };
+
+  const handleAddToWatchlist = () => {
+    if (isAddedToWatchlist) {
+      // Jika film telah ada di Watchlist, konfirmasi pengguna untuk menghapusnya
+      Swal.fire({
+        title: "Remove from Watchlist",
+        text: "Are you sure you want to remove this movie from your Watchlist?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Hapus film dari Watchlist
+          toggleWatchlist();
+          Swal.fire("Removed from Watchlist", "", "success");
+        }
+      });
+    } else {
+      // Jika film belum ada di Watchlist, tambahkan film ke Watchlist
+      toggleWatchlist();
+      Swal.fire("Added to Watchlist", "", "success");
+    }
+  };
+
+  const toggleWatchlist = () => {
+    console.log("Toggle Watchlist function called");
+    if (isAddedToWatchlist) {
+      // Hapus film dari Watchlist
+      const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+      const updatedWatchlist = watchlist.filter((item) => item.id !== movie.id);
+      localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
+      setIsAddedToWatchlist(false);
+    } else {
+      // Tambahkan film ke Watchlist
+      const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
+      watchlist.push(movie);
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      setIsAddedToWatchlist(true);
+    }
+  };
+
 
   if (!movie) {
     return <div className="text-center mt-8">Loading...</div>;
@@ -132,8 +180,17 @@ function MovieDetail() {
               >
                 Watch Trailer
               </button>
-              <button className="bg-gray-300 hover:bg-gray-400 transition duration-300 ease-in-out rounded-md text-gray-900 px-4 py-2">
-                Add to Watchlist
+              <button
+                className={`${
+                  isAddedToWatchlist
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-300 hover:bg-gray-400 text-gray-900"
+                } hover:bg-gray-400 transition duration-300 ease-in-out rounded-md px-4 py-2`}
+                onClick={handleAddToWatchlist}
+              >
+                {isAddedToWatchlist
+                  ? "Remove from Watchlist"
+                  : "Add to Watchlist"}
               </button>
             </div>
           </div>
