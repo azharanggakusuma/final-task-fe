@@ -86,7 +86,7 @@ function MovieDetail() {
     fetchCharacters();
     fetchReviews();
     fetchTrailer();
-    // Periksa apakah film ada di Watchlist saat komponen dimuat
+    
     const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
     const isAdded = watchlist.some((item) => item.id === id);
     setIsAddedToWatchlist(isAdded);
@@ -106,7 +106,6 @@ function MovieDetail() {
 
   const handleAddToWatchlist = () => {
     if (isAddedToWatchlist) {
-      // Jika film telah ada di Watchlist, konfirmasi pengguna untuk menghapusnya
       Swal.fire({
         title: "Remove from Watchlist",
         text: "Are you sure you want to remove this movie from your Watchlist?",
@@ -116,35 +115,41 @@ function MovieDetail() {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          // Hapus film dari Watchlist
           toggleWatchlist();
           Swal.fire("Removed from Watchlist", "", "success");
         }
       });
     } else {
-      // Jika film belum ada di Watchlist, tambahkan film ke Watchlist
-      toggleWatchlist();
-      Swal.fire("Added to Watchlist", "", "success");
+      Swal.fire({
+        title: "Add to Watchlist",
+        text: "Are you sure you want to add this movie to your Watchlist?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Add",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          toggleWatchlist();
+          Swal.fire("Added to Watchlist", "", "success");
+        }
+      });
     }
   };
 
   const toggleWatchlist = () => {
     console.log("Toggle Watchlist function called");
     if (isAddedToWatchlist) {
-      // Hapus film dari Watchlist
       const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
       const updatedWatchlist = watchlist.filter((item) => item.id !== movie.id);
       localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
       setIsAddedToWatchlist(false);
     } else {
-      // Tambahkan film ke Watchlist
       const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
       watchlist.push(movie);
       localStorage.setItem("watchlist", JSON.stringify(watchlist));
       setIsAddedToWatchlist(true);
     }
   };
-
 
   if (!movie) {
     return <div className="text-center mt-8">Loading...</div>;
