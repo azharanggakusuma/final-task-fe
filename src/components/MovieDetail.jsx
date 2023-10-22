@@ -103,7 +103,7 @@ function MovieDetail() {
   }
 
   return (
-    <div className="lg:-mt-96 -mt-10">
+    <div className="mt-16 mb-10">
       {/* Banner */}
       <div
         className="bg-black text-white py-16 px-4"
@@ -140,7 +140,7 @@ function MovieDetail() {
         </div>
       </div>
 
-      <div className="mb-4 mt-20">
+      <div className="mb-4 mt-12">
         <Container>
           <div className="flex space-x-4">
             <button
