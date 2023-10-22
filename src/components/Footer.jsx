@@ -162,7 +162,7 @@ function Footer() {
         </div>
         <hr className="border-t border-blueGray-400 my-4" />
         <div className="container mx-auto text-center text-white text-sm">
-          &copy; {new Date().getFullYear()} Movie App by Azharangga Kusuma. All
+          &copy; {new Date().getFullYear()} Azharangga Kusuma. All
           rights reserved.
         </div>
       </Container>
