@@ -30,6 +30,7 @@ Aplikasi ini adalah sebuah platform web untuk melihat daftar film dan mengakses 
 - The Movie Database (TMDb) API
 - Tailwind
 - Vite
+- Swalert2
 
 ## Memulai
 
